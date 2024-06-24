@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django_celery_beat',
     'users',
+    'habits',
 
 ]
 
@@ -200,9 +201,9 @@ CELERY_TASK_TRACK_STARTED = True
 # Максимальное время на выполнение задачи
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
-# CELERY_BEAT_SCHEDULE = {
-#     'check_user': {
-#         'task': 'lms.tasks.check_user',  # Путь к задаче
-#         'schedule': timedelta(days=1),  # Расписание выполнения задачи
-#     },
-# }
+CELERY_BEAT_SCHEDULE = {
+    'check_user': {
+        'task': 'habits.tasks.send_notification',  # Путь к задаче
+        'schedule': timedelta(minutes=5),  # Расписание выполнения задачи
+    },
+}
