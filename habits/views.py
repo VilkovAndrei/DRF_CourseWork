@@ -1,13 +1,10 @@
 from rest_framework import generics
-from rest_framework.generics import get_object_or_404
+
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
+
 from habits.serializers import HabitSerializer
 from habits.models import Habit
 from habits.paginations import HabitPaginator
-from habits.tasks import send_message_to_tg
 
 from users.permissions import IsOwner, IsSuperuser
 
@@ -19,20 +16,30 @@ class HabitCreateAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-        send_message_to_tg()
 
 
 class HabitListAPIView(generics.ListAPIView):
     serializer_class = HabitSerializer
-    permission_classes = [IsAdminUser| IsOwner]
+    permission_classes = [IsAdminUser | IsOwner]
     pagination_class = HabitPaginator
 
     def get_queryset(self):
         user = self.request.user
         if not user.is_superuser:
-            queryset = Habit.objects.filter(owner=user)
+            queryset = Habit.objects.filter(owner=user).order_by('id')
         else:
-            queryset = Habit.objects.all()
+            queryset = Habit.objects.all().order_by('id')
+        return queryset
+
+
+class PublicHabitListAPIView(generics.ListAPIView):
+    serializer_class = HabitSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = HabitPaginator
+
+    def get_queryset(self):
+        queryset = Habit.objects.filter(is_public=True).order_by('id')
+
         return queryset
 
 

@@ -1,6 +1,9 @@
+from datetime import timezone
+
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from users.models import User
 
@@ -41,3 +44,23 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Добавление пользовательских полей в токен
+        token['email'] = user.email
+
+        return token
+
+    def post(self, request, *args, **kwargs):
+        email = request.data.get("email")
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+            user.last_login = timezone.now()
+            user.save()
+
+        return super().post(request)

@@ -2,6 +2,8 @@ import os
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
+import eventlet
+# eventlet.monkey_patch()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -103,11 +105,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# STATIC_URL = 'static/'
-# STATICFILES_DIRS = (
-#     BASE_DIR / 'static',
-# )
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = 'static/'
+STATICFILES_DIRS = (
+    BASE_DIR / 'static',
+)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -202,8 +204,12 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
 CELERY_BEAT_SCHEDULE = {
-    'check_user': {
+    'send_notification': {
         'task': 'habits.tasks.send_notification',  # Путь к задаче
         'schedule': timedelta(minutes=5),  # Расписание выполнения задачи
     },
 }
+
+TELEGRAM_API_URL='https://api.telegram.org/bot'
+
+TIMEDELTA_NOTIFICATION=15

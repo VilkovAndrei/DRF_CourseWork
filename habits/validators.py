@@ -16,7 +16,7 @@ class ExecTimeValidator:
     def __call__(self, attrs):
         if attrs['time_to_complete'] > timedelta(minutes=2):
             raise ValidationError({
-                "execution_time": "Время выполнения должно быть не больше 2 минут."
+                "time_to_complete": "Время выполнения должно быть не больше 2 минут."
             })
 
 
@@ -35,7 +35,7 @@ class PleasantHabitValidator:
         if {'connected_habit', 'is_pleasant', 'reward'}.issubset(attrs.keys()):
             if attrs['is_pleasant'] and (attrs['connected_habit'] or attrs['reward']):
                 raise ValidationError({
-                    "Очень щедро": "У приятной привычки не может быть вознаграждения или связанной привычки."
+                    "is_pleasant": "У приятной привычки не может быть вознаграждения или связанной привычки."
                 })
 
 
@@ -49,7 +49,7 @@ class FrequencyValidator:
 
 class TimeValidator:
     def __call__(self, attrs):
-        if attrs['time'] < datetime.now(timezone.utc):
+        if attrs['time'] < datetime.now(timezone.utc) + timedelta(minutes=5):
             raise ValidationError({
-                'time': 'Время выполнения должно быть не больше 120 секунд.'
+                'time': 'Время старта привычки не может быть меньше текущего времени + 5 минут.'
             })

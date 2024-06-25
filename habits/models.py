@@ -8,18 +8,18 @@ HABIT_MODEL = 'habits.Habit'
 
 
 class Habit(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE, verbose_name='владелец')
 
-    place = models.CharField(max_length=100)
-    time = models.DateTimeField()
-    action = models.CharField(max_length=150)
-    frequency = models.DurationField(default=timedelta(days=1))
-    time_to_complete = models.DurationField()
-    is_public = models.BooleanField(default=False)
-    is_pleasant = models.BooleanField(default=False)
+    place = models.CharField(max_length=100, verbose_name='место действия')
+    time = models.DateTimeField(verbose_name='время')
+    action = models.CharField(max_length=150, verbose_name='действие')
+    frequency = models.DurationField(default=timedelta(days=1), verbose_name='периодичность')
+    time_to_complete = models.DurationField(verbose_name='продолжительность действия')
+    is_public = models.BooleanField(default=False, verbose_name='признак публичности')
+    is_pleasant = models.BooleanField(default=False, verbose_name='признак приятной привычки')
 
-    connected_habit = models.ForeignKey(HABIT_MODEL, on_delete=models.SET_NULL, **NULLABLE)
-    reward = models.CharField(max_length=200, **NULLABLE)
+    connected_habit = models.ForeignKey(HABIT_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='связанная привычка')
+    reward = models.CharField(max_length=200, **NULLABLE, verbose_name='награда')
 
     def __str__(self):
         return f"{self.action} in {self.place} at {self.time}"
