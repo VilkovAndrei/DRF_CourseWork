@@ -2,7 +2,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
-import eventlet
+# import eventlet
 # eventlet.monkey_patch()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -172,18 +172,6 @@ SWAGGER_SETTINGS = {
    }
 }
 
-# STRIPE_API_KEY = os.getenv('STRIPE_API_KEY')
-#
-# CUR_API_URL= os.getenv('CUR_API_URL')
-# CUR_API_KEY= os.getenv('CUR_API_KEY')
-
-# CACHES = {
-#     'default': {
-#         'BACKEND': os.getenv('BACKEND'),
-#         'LOCATION': os.getenv('LOCATION')
-#     }
-# }
-#
 # CACHE_ENABLED = os.getenv('CACHE_ENABLED')
 
 # Настройки для Celery
