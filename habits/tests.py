@@ -196,7 +196,7 @@ class HabitTestCase(APITestCase):
             'time': 'Время старта привычки не может быть меньше текущего времени + 5 минут.'
         })
 
-    def test_send_notification(self):
+    def test_tasks(self):
         """ Тестирование отправки сообщения в телеграм"""
         test_time = self.test_habit.time + self.test_habit.frequency
         send_notification()
