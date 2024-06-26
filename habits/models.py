@@ -14,11 +14,12 @@ class Habit(models.Model):
     time = models.DateTimeField(verbose_name='время')
     action = models.CharField(max_length=150, verbose_name='действие')
     frequency = models.DurationField(default=timedelta(days=1), verbose_name='периодичность')
-    time_to_complete = models.DurationField(verbose_name='продолжительность действия')
+    time_to_complete = models.DurationField(default=timedelta(minutes=1), verbose_name='продолжительность действия')
     is_public = models.BooleanField(default=False, verbose_name='признак публичности')
     is_pleasant = models.BooleanField(default=False, verbose_name='признак приятной привычки')
 
-    connected_habit = models.ForeignKey(HABIT_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='связанная привычка')
+    connected_habit = models.ForeignKey(HABIT_MODEL, on_delete=models.SET_NULL, **NULLABLE,
+                                        verbose_name='связанная привычка')
     reward = models.CharField(max_length=200, **NULLABLE, verbose_name='награда')
 
     def __str__(self):

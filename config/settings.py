@@ -210,6 +210,5 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
-TELEGRAM_API_URL='https://api.telegram.org/bot'
 
 TIMEDELTA_NOTIFICATION=15

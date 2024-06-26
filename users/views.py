@@ -1,5 +1,6 @@
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from users.models import User
@@ -14,15 +15,26 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class UserCreateAPIView(generics.CreateAPIView):
     serializer_class = UserRegisterSerializer
 
+    def post(self, request, *args, **kwargs):
+        serializer = UserRegisterSerializer(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            serializer.save()
+            data['response'] = True
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            data = serializer.errors
+            return Response(data)
+
 
 class UserRetrieveView(generics.RetrieveAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOwner | IsSuperuser]
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
 
 class UserUpdateView(generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOwner | IsSuperuser]
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
