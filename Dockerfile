@@ -1,6 +1,6 @@
 FROM python:3.11
 
-WORKDIR /lms_app
+WORKDIR /habits_app
 
 COPY requirements.txt .
 
